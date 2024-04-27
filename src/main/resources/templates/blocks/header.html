@@ -1,15 +1,11 @@
-<div th:fragment="header">
-    <nav class="bg-white shadow-lg">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <h1 class="text-xl font-bold">EmailService</h1>
-                <div class="flex space-x-4">
-                    <a href="#" class="bg-blue-500 text-white py-2 px-6 rounded-full font-bold hover:bg-blue-600 transition duration-300">Compose</a>
-                    <a href="#" class="bg-blue-500 text-white py-2 px-6 rounded-full font-bold hover:bg-blue-600 transition duration-300">Send Email</a>
-                    <a href="#" class="bg-blue-500 text-white py-2 px-6 rounded-full font-bold hover:bg-blue-600 transition duration-300">Inbox</a>
-                    <a href="#" class="bg-blue-500 text-white py-2 px-6 rounded-full font-bold hover:bg-blue-600 transition duration-300">Sent</a>
-                </div>
-            </div>
+<div th:fragment="header" class="container mx-auto px-4">
+    <div class="flex justify-between items-center py-4">
+        <h1 class="text-xl font-bold">EmailService</h1>
+        <div class="flex space-x-4">
+            <a href="/write-email" class="bg-blue-500 text-white py-2 px-6 rounded-full font-bold hover:bg-blue-600 transition duration-300">Compose</a>
+            <a href="/send-email" class="bg-blue-500 text-white py-2 px-6 rounded-full font-bold hover:bg-blue-600 transition duration-300">Send Email</a>
+            <a href="/inbox" class="bg-blue-500 text-white py-2 px-6 rounded-full font-bold hover:bg-blue-600 transition duration-300">Inbox</a>
+            <a href="/sent-emails" class="bg-blue-500 text-white py-2 px-6 rounded-full font-bold hover:bg-blue-600 transition duration-300">Sent</a>
         </div>
-    </nav>
+    </div>
 </div>

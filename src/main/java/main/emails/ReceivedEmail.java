@@ -13,9 +13,9 @@ public class ReceivedEmail extends Email {
     private final String sender_email;
     private final String sender_name;
 
-    public ReceivedEmail(String sender, String subject, String text, String name) {
+    public ReceivedEmail(String sender_email, String subject, String text, String name) {
         super(text, subject, false);
-        this.sender_email = sender;
+        this.sender_email = sender_email;
         this.sender_name = name;
         this.isSpam = false;
         this.isLiked = false;

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="UTF-8" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compose Email</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for textarea */
+        textarea {
+            resize: vertical; /* Allow only vertical resizing */
+            height: 200px;
+            min-height: 100px; /* Minimum height */
+            max-height: 300px; /* Maximum height */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-2xl mx-auto bg-white p-8 border border-gray-200 rounded-lg shadow-sm">
+        <h2 class="font-semibold text-xl mb-6 text-gray-800">Compose New Email</h2>
+        <form action="#" th:action="@{/write-email}" method="post">
+            <div class="mb-4">
+                <label for="receiver_email" class="block text-sm font-medium text-gray-700">To:</label>
+                <input type="text" id="receiver_email" name="receiver_email" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                       placeholder="Enter recipient's email">
+            </div>
+            <div class="mb-4">
+                <label for="subject" class="block text-sm font-medium text-gray-700">Subject:</label>
+                <input type="text" id="subject" name="subject" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                       placeholder="Enter subject">
+            </div>
+            <div class="mb-6">
+                <label for="text" class="block text-sm font-medium text-gray-700">Message:</label>
+                <textarea id="text" name="text" required
+                          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="Write your message here"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Send Email
+            </button>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>
