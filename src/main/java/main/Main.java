@@ -3,6 +3,8 @@ package main;
 import main.emails.ReceivedEmail;
 import main.emails.SentEmail;
 import org.springframework.boot.SpringApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-@RestController
+@Controller
 public class Main {
 
 	public static final List<SentEmail> sent_emails = new ArrayList<>();
@@ -31,6 +33,12 @@ public class Main {
 	@GetMapping("/hello")
 	public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
 		return String.format("Hello %s!", name);
+	}
+
+	@GetMapping("/")
+	public String home(Model model) {
+		model.addAttribute("title", "Home page");
+		return "home";
 	}
 
 }
