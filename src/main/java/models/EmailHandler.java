@@ -6,6 +6,20 @@ import main.emails.ReceivedEmail;
 import main.emails.SentEmail;
 
 public abstract class EmailHandler {
+    public static ReceivedEmail findEmailById(int emailId) {
+        for(ReceivedEmail email : Main.received_emails) {
+            if(email.getId() == emailId) {
+                return email;
+            }
+        }
+        for(ReceivedEmail email : Main.spam_emails) {
+            if(email.getId() == emailId) {
+                return email;
+            }
+        }
+        return null;
+    }
+
     public static void sendEmail(String email, String subject, String text) {
         SentEmail sentEmail = new SentEmail(email, subject, text);
         Main.sent_emails.add(sentEmail);
@@ -23,20 +37,22 @@ public abstract class EmailHandler {
         }
     }
 
-    public static void markAsStarred(boolean b, ReceivedEmail email) {
-        if(b) {
+    public static void markAsStarred(ReceivedEmail email) {
+        if(!email.isStarred) {
             email.isStarred = true;
             Main.starred_emails.add(email);
             ReceivedEmail.starred_count++;
+            System.out.println("Starred count: " + ReceivedEmail.starred_count);
         } else {
             email.isStarred = false;
             Main.starred_emails.remove(email);
             ReceivedEmail.starred_count--;
+            System.out.println("Starred count: " + ReceivedEmail.starred_count);
         }
     }
 
-    public static void markAsLiked(boolean b, ReceivedEmail email) {
-        if(b) {
+    public static void markAsLiked(ReceivedEmail email) {
+        if(!email.isLiked) {
             email.isLiked = true;
             Main.liked_emails.add(email);
             ReceivedEmail.liked_count++;

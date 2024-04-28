@@ -14,10 +14,4 @@ public class MainController {
         return "index";
     }
 
-//    @GetMapping("/write-email")
-//    public String writeEmail(Model model) {
-//        model.addAttribute("title", "Write email");
-//        return "write-email";
-//    }
-
 }

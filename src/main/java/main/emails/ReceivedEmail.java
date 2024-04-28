@@ -21,6 +21,7 @@ public class ReceivedEmail extends Email {
         this.isLiked = false;
         this.isStarred = false;
         this.isViewed = false;
+        received_count++;
     }
 
     public String getEmail() {

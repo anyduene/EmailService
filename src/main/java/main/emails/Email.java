@@ -3,6 +3,7 @@ package main.emails;
 import models.TimeHandler;
 
 public abstract class Email {
+    private final int id;
     private final String subject;
     private final String text;
     private final String date;
@@ -15,6 +16,11 @@ public abstract class Email {
         this.date = TimeHandler.getDate();
         this.time = TimeHandler.getTime();
         this.isViewed = isViewed;
+        this.id = ReceivedEmail.received_count + SentEmail.sent_count + ReceivedEmail.spam_count;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getSubject() {
