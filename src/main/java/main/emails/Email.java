@@ -1,6 +1,6 @@
 package main.emails;
 
-import models.TimeHandler;
+import main.entities.models.TimeHandler;
 
 public abstract class Email {
     private final int id;

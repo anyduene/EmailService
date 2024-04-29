@@ -8,7 +8,7 @@
 <body class="bg-gray-100 flex flex-col min-h-screen">
 
 <!-- Navigation -->
-<nav th:insert="blocks/header :: header" class="bg-white shadow-lg"></nav>
+<nav th:insert="~{blocks/header :: header}" class="bg-white shadow-lg"></nav>
 
 <!-- Hero Section with Additional Content -->
 <section class="bg-gradient-to-b from-blue-400 to-blue-600 text-white flex-grow">
@@ -54,7 +54,7 @@
 </section>
 
 <!-- Footer -->
-<footer th:insert="blocks/footer :: footer" class="bg-gray-900 text-white py-6 mt-auto"></footer>
+<footer th:insert="~{blocks/footer :: footer}" class="bg-gray-900 text-white py-6 mt-auto"></footer>
 
 </body>
 </html>

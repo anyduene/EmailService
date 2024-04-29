@@ -8,6 +8,21 @@
 <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />-->
 <!--</head>-->
 <!--<body class="bg-gray-100">-->
+<!--<div id="modal" class="fixed inset-0 z-50 hidden overflow-auto bg-gray-500/25 flex justify-center items-center">-->
+<!--    <div class="relative border-2 border-gray-500 rounded-xl bg-white w-1/2 p-8">-->
+<!--        &lt;!&ndash; Заголовок модального вікна &ndash;&gt;-->
+<!--        <h2 class="text-xl font-semibold mb-4">Детальна інформація</h2>-->
+<!--        &lt;!&ndash; Контент модального вікна &ndash;&gt;-->
+<!--        <div id="modalContent"></div>-->
+<!--        &lt;!&ndash; Кнопка для закриття модального вікна &ndash;&gt;-->
+<!--        <button id="closeModal" class="absolute top-0 right-0 m-4 text-gray-600 hover:text-gray-900 focus:outline-none">-->
+<!--            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">-->
+<!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>-->
+<!--            </svg>-->
+<!--        </button>-->
+<!--    </div>-->
+<!--</div>-->
+
 <!--<div class="container mx-auto px-4 py-12">-->
 <!--    <div class="max-w-4xl mx-auto bg-white p-8 border border-gray-200 rounded-lg shadow-sm">-->
 <!--        <a href="/" class="absolute ml-3 inline-block">-->
@@ -37,18 +52,13 @@
 <!--                            <div class="ml-3">-->
 <!--                                <p class="text-gray-900 whitespace-no-wrap" th:text="${email.getName()}"></p>-->
 <!--                                <p class="text-gray-600 whitespace-no-wrap" th:text="${email.getEmail()}"></p>-->
-<!--                                <button data-modal-target="emailModal" data-modal-toggle="emailModal" class="block mt-20 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">-->
-<!--                                    Toggle modal-->
-<!--                                </button>-->
-<!--                                &lt;!&ndash; Modal &ndash;&gt;-->
-<!--                                <div th:insert="blocks/detail-modal :: detail-modal(${email.getEmail()}, ${email.getName()})" id="emailModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"></div>-->
 <!--                            </div>-->
 <!--                        </div>-->
 <!--                    </td>-->
 <!--                    <td class="px-3 py-3 border-b border-gray-200 bg-white text-base">-->
 <!--                        <p class="text-gray-900 whitespace-no-wrap" th:text="${email.getSubject()}"></p>-->
 <!--                    </td>-->
-<!--                    <td class="w-26 px-3 py-3 border-b border-gray-200 bg-white text-base space-x-2">-->
+<!--                    <td class="w-32 pr-3 py-3 border-b border-gray-200 bg-white text-base space-x-2">-->
 <!--                        <div class="flex space-x-2">-->
 <!--                            <form th:action="@{/star}" th:method="post">-->
 <!--                                <input type="hidden" name="emailId" th:value="${email.getId()}" />-->
@@ -60,6 +70,12 @@
 <!--                                <input type="hidden" name="emailId" th:value="${email.getId()}" />-->
 <!--                                <button type="submit">-->
 <!--                                    <img th:src="${email.isLiked} ? '/images/filled_heart.png' : '/images/empty_heart.png'" alt="Like" class="w-7 h-7"/>-->
+<!--                                </button>-->
+<!--                            </form>-->
+<!--                            <form class="mt-1 ml-1" th:action="@{/email-details}" th:method="post">-->
+<!--                                <input type="hidden" name="emailId" th:value="${email.getId()}" />-->
+<!--                                <button type="submit">-->
+<!--                                    <img th:src="'/images/info.png'" alt="Info" class="w-7 h-7"/>-->
 <!--                                </button>-->
 <!--                            </form>-->
 <!--                        </div>-->
@@ -121,25 +137,30 @@
             <img src="/images/back_arrow.png" alt="Back" class="w-10 h-7"/>
         </a>
         <h2 class="font-semibold text-3xl mb-6 text-gray-800 text-center">Inbox</h2>
-        <a href="/test">TEST</a>
         <div class="overflow-x-auto">
             <table class="min-w-full leading-normal">
                 <thead>
                 <tr>
-                    <th class="w-40 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="w-14 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                        Date
+                    </th>
+                    <th class="w-48 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                         Sender
                     </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="pl-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                         Subject
                     </th>
-                    <th class="w-24 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="w-24 pl-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                         Actions
                     </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="email : ${emails}">
-                    <td class="w-40 px-3 py-3 border-b border-gray-200 bg-white text-base">
+                    <td class="w-14 py-3 border-b border-gray-200 bg-white text-base">
+                        <p class="text-gray-900 text-sm whitespace-no-wrap" th:text="${email.getDate()}"></p>
+                    </td>
+                    <td class="w-48 px-3 py-3 border-b border-gray-200 bg-white text-base">
                         <div class="flex items-center">
                             <div class="ml-3">
                                 <p class="text-gray-900 whitespace-no-wrap" th:text="${email.getName()}"></p>

@@ -1,50 +1,57 @@
 package main.controllers;
 
 import filters.ConfidentialDataManager;
-import main.Main;
 import main.emails.ReceivedEmail;
-import models.EmailHandler;
-import org.springframework.http.ResponseEntity;
+import main.entities.IReceivedEmailsRepository;
+import main.entities.models.EmailHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import static models.EmailHandler.findEmailById;
 
 @Controller
 public class InboxController {
+    private static int count = 0;
+    private final EmailHandler emailHandler;
+    private final IReceivedEmailsRepository receivedEmailsRepository;
+
+    public InboxController(IReceivedEmailsRepository receivedEmailsRepository, EmailHandler emailHandler) {
+        this.receivedEmailsRepository = receivedEmailsRepository;
+        this.emailHandler = emailHandler;
+        count++;
+    }
 
     @GetMapping("/inbox")
     public String inbox(Model model) {
-        model.addAttribute("emails", Main.received_emails);
+        model.addAttribute("emails", receivedEmailsRepository.getReceivedEmails());
         return "inbox";
     }
 
     @PostMapping("/star")
     public String starEmail(@RequestParam int emailId) {
-        ReceivedEmail email = findEmailById(emailId);
-        EmailHandler.markAsStarred(email);
+        ReceivedEmail email = emailHandler.findEmailById(emailId);
+        emailHandler.markAsStarred(email);
         return "redirect:/inbox";
     }
 
     @PostMapping("/like")
     public String likeEmail(@RequestParam int emailId) {
-        ReceivedEmail email = findEmailById(emailId);
-        EmailHandler.markAsLiked(email);
+        ReceivedEmail email = emailHandler.findEmailById(emailId);
+        emailHandler.markAsLiked(email);
+        System.out.println(count);
         return "redirect:/inbox";
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "test";
+    @GetMapping("/email-details")
+    public String emailDetailsGet(Model model) {
+
+        return "email-details";
     }
 
     @PostMapping("/email-details")
     public String emailDetails(@RequestParam int emailId, Model model) {
-        ReceivedEmail email = findEmailById(emailId);
+        ReceivedEmail email = emailHandler.findEmailById(emailId);
         email.text = ConfidentialDataManager.complexCheck(email.text);
         model.addAttribute("email", email);
         return "email-details";
@@ -52,15 +59,15 @@ public class InboxController {
 
     @PostMapping("/view-full")
     public String viewFullEmailPost(@RequestParam int emailId, Model model) {
-        ReceivedEmail email = findEmailById(emailId);
+        ReceivedEmail email = emailHandler.findEmailById(emailId);
         model.addAttribute("email", email);
-        return "email-details";
+        return "redirect:/email-details";
     }
 
     @PostMapping("/mark-as-spam")
     public String markAsSpam(@RequestParam int emailId) {
-        ReceivedEmail email = findEmailById(emailId);
-        EmailHandler.markAsSpam(email);
+        ReceivedEmail email = emailHandler.findEmailById(emailId);
+        emailHandler.markAsSpam(email);
         return "redirect:/inbox";
     }
 

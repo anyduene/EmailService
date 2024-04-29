@@ -2,7 +2,7 @@ package main.controllers;
 
 import main.emails.ReceivedEmail;
 import main.emails.SentEmail;
-import models.EmailHandler;
+import main.entities.models.IEmailHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class EmailController {
+    public final IEmailHandler emailHandler;
+
+    public EmailController(IEmailHandler emailHandler) {
+        this.emailHandler = emailHandler;
+    }
 
     @GetMapping("/write-email")
     public String showComposeForm(Model model) {
@@ -20,7 +25,7 @@ public class EmailController {
 
     @PostMapping("/write-email")
     public String handleFormSubmit(@RequestParam String receiver_email, @RequestParam String subject, @RequestParam String text) {
-        EmailHandler.sendEmail(receiver_email, subject, text);
+        emailHandler.sendEmail(receiver_email, subject, text);
         return "redirect:/";
     }
 
@@ -32,7 +37,7 @@ public class EmailController {
 
     @PostMapping("/receive-email")
     public String handleReceiveFormSubmit(@RequestParam String sender_email, @RequestParam String subject, @RequestParam String text, @RequestParam String name) {
-        EmailHandler.receiveEmail(sender_email, subject, text, name);
+        emailHandler.receiveEmail(sender_email, subject, text, name);
         return "redirect:/";
     }
 

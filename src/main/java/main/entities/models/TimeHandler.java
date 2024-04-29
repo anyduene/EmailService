@@ -1,8 +1,11 @@
-package models;
+package main.entities.models;
+
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-public abstract class TimeHandler {
+@Component
+public class TimeHandler {
     private static final int minute = LocalDateTime.now().getMinute();
     private static final int hour = LocalDateTime.now().getHour();
     private static final int day = LocalDateTime.now().getDayOfMonth();

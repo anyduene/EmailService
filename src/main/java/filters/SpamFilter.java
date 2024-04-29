@@ -1,17 +1,27 @@
 package filters;
 
 import main.Main;
+import main.emails.ReceivedEmail;
+import main.entities.IReceivedEmailsRepository;
+import main.entities.ISpamFilterRepository;
 
 public abstract class SpamFilter {
+    private static ISpamFilterRepository spamFilterRepository;
+    private static IReceivedEmailsRepository receivedEmailsRepository;
+
+    public SpamFilter(ISpamFilterRepository spamFilterRepository, IReceivedEmailsRepository receivedEmailsRepository) {
+        SpamFilter.spamFilterRepository = spamFilterRepository;
+        SpamFilter.receivedEmailsRepository = receivedEmailsRepository;
+    }
 
     private static boolean checkDomain(String sender_email) {
-        for(String domain : Main.white_list_domains) {
+        for(String domain : spamFilterRepository.getWhiteListDomains()) {
             if(sender_email.contains(domain)) {
                 return false;
             }
         }
 
-        for(String domain : Main.black_list_domains) {
+        for(String domain : spamFilterRepository.getBlackListDomains()) {
             if(sender_email.contains(domain)) {
                 return true;
             }
@@ -21,7 +31,7 @@ public abstract class SpamFilter {
     }
 
     private static boolean checkContent(String text) {
-        for(String word : Main.black_list_content) {
+        for(String word : spamFilterRepository.getBlackListContent()) {
             if(text.contains(word)) {
                 return true;
             }
@@ -31,8 +41,8 @@ public abstract class SpamFilter {
     }
 
     private static boolean checkDuplicate(String text) {
-        for(int i = 0; i < Main.received_emails.size(); i++) {
-            if(Main.received_emails.get(i).getText().equals(text)) {
+        for(int i = 0; i < ReceivedEmail.received_count; i++) {
+            if(receivedEmailsRepository.getReceivedEmails().get(i).getText().equals(text)) {
                 return true;
             }
         }
