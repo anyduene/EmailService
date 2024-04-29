@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto bg-white p-8 border border-gray-200 rounded-lg shadow-sm">
+        <a href="/inbox" class="absolute ml-3 inline-block">
+            <img src="/images/back_arrow.png" alt="Back" class="w-10 h-7"/>
+        </a>
+        <h2 class="font-semibold text-3xl mb-6 text-gray-800 text-center">Email Details</h2>
+        <div class="border-b border-gray-200 pb-4 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800">Sender:</h3>
+            <p class="text-gray-700" id="senderName" th:text="${email.getName()}"></p>
+            <p class="text-gray-700" id="senderEmail" th:text="${email.getEmail()}"></p>
+        </div>
+        <div class="border-b border-gray-200 pb-4 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800">Subject:</h3>
+            <p class="text-gray-700" id="emailSubject" th:text="${email.getSubject()}"></p>
+        </div>
+        <div class="border-b border-gray-200 pb-4 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800">Content:</h3>
+            <p class="text-gray-700" id="emailContent" th:text="${email.getText()}"></p>
+        </div>
+        <div class="flex justify-end">
+            <form class="mx-1" th:action="@{/view-full}" th:method="post">
+                <input type="hidden" name="emailId" th:value="${email.getId()}" />
+                <button type="submit" class="btn bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">View full</button>
+            </form>
+            <form class="mx-1" th:action="@{/mark-as-spam}" th:method="post">
+                <input type="hidden" name="emailId" th:value="${email.getId()}" />
+                <button type="submit" class="btn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Mark as Spam</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

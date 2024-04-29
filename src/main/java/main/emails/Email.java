@@ -5,7 +5,7 @@ import models.TimeHandler;
 public abstract class Email {
     private final int id;
     private final String subject;
-    private final String text;
+    public String text;
     private final String date;
     private final String time;
     public boolean isViewed;

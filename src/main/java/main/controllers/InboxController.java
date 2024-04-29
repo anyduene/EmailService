@@ -1,5 +1,6 @@
 package main.controllers;
 
+import filters.ConfidentialDataManager;
 import main.Main;
 import main.emails.ReceivedEmail;
 import models.EmailHandler;
@@ -33,6 +34,33 @@ public class InboxController {
     public String likeEmail(@RequestParam int emailId) {
         ReceivedEmail email = findEmailById(emailId);
         EmailHandler.markAsLiked(email);
+        return "redirect:/inbox";
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
+
+    @PostMapping("/email-details")
+    public String emailDetails(@RequestParam int emailId, Model model) {
+        ReceivedEmail email = findEmailById(emailId);
+        email.text = ConfidentialDataManager.complexCheck(email.text);
+        model.addAttribute("email", email);
+        return "email-details";
+    }
+
+    @PostMapping("/view-full")
+    public String viewFullEmailPost(@RequestParam int emailId, Model model) {
+        ReceivedEmail email = findEmailById(emailId);
+        model.addAttribute("email", email);
+        return "email-details";
+    }
+
+    @PostMapping("/mark-as-spam")
+    public String markAsSpam(@RequestParam int emailId) {
+        ReceivedEmail email = findEmailById(emailId);
+        EmailHandler.markAsSpam(email);
         return "redirect:/inbox";
     }
 
