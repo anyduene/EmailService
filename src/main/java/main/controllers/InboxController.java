@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 public class InboxController {
     private ReceivedEmail email;
+    private String keyword;
     private final EmailHandler emailHandler;
     private final IReceivedEmailsRepository receivedEmailsRepository;
 
@@ -31,21 +35,26 @@ public class InboxController {
     public String starEmail(@RequestParam int emailId) {
         ReceivedEmail email = emailHandler.findEmailById(emailId);
         emailHandler.markAsStarred(email);
-        return "redirect:/inbox";
+        if(keyword == null || keyword.isEmpty()) {
+            return "redirect:/inbox";
+        }
+        return "redirect:/inbox/search?keyword=" + keyword;
     }
 
     @PostMapping("/like")
     public String likeEmail(@RequestParam int emailId) {
         ReceivedEmail email = emailHandler.findEmailById(emailId);
         emailHandler.markAsLiked(email);
-        return "redirect:/inbox";
+        if(keyword == null || keyword.isEmpty()) {
+            return "redirect:/inbox";
+        }
+        return "redirect:/inbox/search?keyword=" + keyword;
     }
 
     @PostMapping("/inbox/email-details")
     public String emailDetails(@RequestParam int emailId, Model model) {
         email = emailHandler.findEmailById(emailId);
         ReceivedEmail hiddenEmail = new ReceivedEmail(email.getEmail(), email.getSubject(), ConfidentialDataManager.complexCheck(email.getText()), email.getName());
-        System.out.println(email.getText());
         model.addAttribute("email", hiddenEmail);
         return "email-details";
     }
@@ -61,5 +70,29 @@ public class InboxController {
         ReceivedEmail email = emailHandler.findEmailById(emailId);
         emailHandler.markAsSpam(email);
         return "redirect:/inbox";
+    }
+
+    @PostMapping("/filter")
+    public String filterEmails(@RequestParam(value = "liked", required = false) boolean liked,
+                               @RequestParam(value = "starred", required = false) boolean starred,
+                               Model model) {
+        List<ReceivedEmail> filteredEmails = receivedEmailsRepository.getReceivedEmails().stream()
+                .filter(email -> (liked && email.isLiked) || (starred && email.isStarred))
+                .collect(Collectors.toList());
+        model.addAttribute("emails", filteredEmails);
+        return "inbox";
+    }
+
+    @GetMapping("/inbox/search")
+    public String searchEmails(@RequestParam String keyword, Model model) {
+        if(keyword == null || keyword.isEmpty()) {
+            return "redirect:/inbox";
+        }
+        this.keyword = keyword;
+        List<ReceivedEmail> searchResult = receivedEmailsRepository.getReceivedEmails().stream()
+                .filter(email -> email.getSubject().contains(keyword) || email.getText().contains(keyword))
+                .collect(Collectors.toList());
+        model.addAttribute("emails", searchResult);
+        return "inbox";
     }
 }
