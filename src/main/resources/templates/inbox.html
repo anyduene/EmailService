@@ -185,7 +185,7 @@
                                     <img th:src="${email.isLiked} ? '/images/filled_heart.png' : '/images/empty_heart.png'" alt="Like" class="w-7 h-7"/>
                                 </button>
                             </form>
-                            <form class="mt-1 ml-1" th:action="@{/email-details}" th:method="post">
+                            <form class="mt-1 ml-1" th:action="@{/inbox/email-details}" th:method="post">
                                 <input type="hidden" name="emailId" th:value="${email.getId()}" />
                                 <button type="submit">
                                     <img th:src="'/images/info.png'" alt="Info" class="w-7 h-7"/>

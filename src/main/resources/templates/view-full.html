@@ -27,9 +27,9 @@
             <p class="text-gray-700" id="emailContent" th:text="${email.getText()}"></p>
         </div>
         <div class="flex justify-end">
-            <form class="mx-1" th:action="@{/inbox/email-details/view-full}" th:method="post">
-                <input type="hidden" name="emailId" th:value="${email.getId()}" />
-                <button type="submit" class="btn bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">View full</button>
+            <form class="mx-1">
+                <input type="hidden"/>
+                <button disabled type="submit" class="btn cursor-not-allowed bg-gray-400 text-white font-bold py-2 px-4 rounded">View full</button>
             </form>
             <form class="mx-1" th:action="@{/mark-as-spam}" th:method="post">
                 <input type="hidden" name="emailId" th:value="${email.getId()}" />

@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class InboxController {
-    private static int count = 0;
+    private ReceivedEmail email;
     private final EmailHandler emailHandler;
     private final IReceivedEmailsRepository receivedEmailsRepository;
 
     public InboxController(IReceivedEmailsRepository receivedEmailsRepository, EmailHandler emailHandler) {
         this.receivedEmailsRepository = receivedEmailsRepository;
         this.emailHandler = emailHandler;
-        count++;
     }
 
     @GetMapping("/inbox")
@@ -39,29 +38,22 @@ public class InboxController {
     public String likeEmail(@RequestParam int emailId) {
         ReceivedEmail email = emailHandler.findEmailById(emailId);
         emailHandler.markAsLiked(email);
-        System.out.println(count);
         return "redirect:/inbox";
     }
 
-    @GetMapping("/email-details")
-    public String emailDetailsGet(Model model) {
-
-        return "email-details";
-    }
-
-    @PostMapping("/email-details")
+    @PostMapping("/inbox/email-details")
     public String emailDetails(@RequestParam int emailId, Model model) {
-        ReceivedEmail email = emailHandler.findEmailById(emailId);
-        email.text = ConfidentialDataManager.complexCheck(email.text);
-        model.addAttribute("email", email);
+        email = emailHandler.findEmailById(emailId);
+        ReceivedEmail hiddenEmail = new ReceivedEmail(email.getEmail(), email.getSubject(), ConfidentialDataManager.complexCheck(email.getText()), email.getName());
+        System.out.println(email.getText());
+        model.addAttribute("email", hiddenEmail);
         return "email-details";
     }
 
-    @PostMapping("/view-full")
-    public String viewFullEmailPost(@RequestParam int emailId, Model model) {
-        ReceivedEmail email = emailHandler.findEmailById(emailId);
+    @PostMapping("/inbox/email-details/view-full")
+    public String viewFullEmailPost(Model model) {
         model.addAttribute("email", email);
-        return "redirect:/email-details";
+        return "view-full";
     }
 
     @PostMapping("/mark-as-spam")
@@ -70,5 +62,4 @@ public class InboxController {
         emailHandler.markAsSpam(email);
         return "redirect:/inbox";
     }
-
 }

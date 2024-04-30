@@ -5,7 +5,7 @@ import main.entities.models.TimeHandler;
 public abstract class Email {
     private final int id;
     private final String subject;
-    public String text;
+    private final String text;
     private final String date;
     private final String time;
     public boolean isViewed;

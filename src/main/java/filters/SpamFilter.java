@@ -1,6 +1,5 @@
 package filters;
 
-import main.Main;
 import main.emails.ReceivedEmail;
 import main.entities.IReceivedEmailsRepository;
 import main.entities.ISpamFilterRepository;
