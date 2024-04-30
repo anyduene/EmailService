@@ -54,15 +54,18 @@ public class InboxController {
     @PostMapping("/inbox/email-details")
     public String emailDetails(@RequestParam int emailId, Model model) {
         email = emailHandler.findEmailById(emailId);
-        ReceivedEmail hiddenEmail = new ReceivedEmail(email.getEmail(), email.getSubject(), ConfidentialDataManager.complexCheck(email.getText()), email.getName());
-        model.addAttribute("email", hiddenEmail);
+        model.addAttribute("email", email);
+        model.addAttribute("text", ConfidentialDataManager.complexCheck(email.getText()));
+        model.addAttribute("fullView", false);
         return "email-details";
     }
 
     @PostMapping("/inbox/email-details/view-full")
     public String viewFullEmailPost(Model model) {
         model.addAttribute("email", email);
-        return "view-full";
+        model.addAttribute("text", email.getText());
+        model.addAttribute("fullView", true);
+        return "email-details";
     }
 
     @PostMapping("/mark-as-spam")
@@ -76,6 +79,9 @@ public class InboxController {
     public String filterEmails(@RequestParam(value = "liked", required = false) boolean liked,
                                @RequestParam(value = "starred", required = false) boolean starred,
                                Model model) {
+        if(!liked && !starred) {
+            return "redirect:/inbox";
+        }
         List<ReceivedEmail> filteredEmails = receivedEmailsRepository.getReceivedEmails().stream()
                 .filter(email -> (liked && email.isLiked) || (starred && email.isStarred))
                 .collect(Collectors.toList());
