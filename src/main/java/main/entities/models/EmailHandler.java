@@ -3,8 +3,8 @@ package main.entities.models;
 import filters.SpamFilter;
 import main.emails.ReceivedEmail;
 import main.emails.SentEmail;
-import main.entities.IReceivedEmailsRepository;
-import main.entities.ISentEmailsRepository;
+import main.entities.repositories.IReceivedEmailsRepository;
+import main.entities.repositories.ISentEmailsRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

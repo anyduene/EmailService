@@ -1,4 +1,4 @@
-package main.entities;
+package main.entities.repositories;
 
 import main.emails.ReceivedEmail;
 import main.emails.SentEmail;

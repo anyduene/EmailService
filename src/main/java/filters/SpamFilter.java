@@ -1,8 +1,8 @@
 package filters;
 
 import main.emails.ReceivedEmail;
-import main.entities.IReceivedEmailsRepository;
-import main.entities.ISpamFilterRepository;
+import main.entities.repositories.IReceivedEmailsRepository;
+import main.entities.repositories.ISpamFilterRepository;
 
 public abstract class SpamFilter {
     private static ISpamFilterRepository spamFilterRepository;

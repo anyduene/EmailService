@@ -10,12 +10,12 @@
 <body class="bg-gray-100">
 <div class="container mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto bg-white p-8 border border-gray-200 rounded-lg shadow-sm">
-        <a href="/" class="absolute ml-3 inline-block">
+        <a href="/index" class="absolute ml-3 inline-block">
             <img src="/images/back_arrow.png" alt="Back" class="w-10 h-7"/>
         </a>
         <h2 class="font-semibold text-3xl mb-6 text-gray-800 text-center">Inbox</h2>
         <div class="flex justify-between mb-4">
-            <form th:action="@{/filter}" method="post" class="flex items-center">
+            <form th:if="${received}" th:action="@{/filter}" method="post" class="flex items-center">
                 <label class="inline-flex items-center">
                     <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-500" name="liked" value="true"/>
                     <span class="ml-2 text-gray-700">Liked</span>
@@ -28,70 +28,40 @@
                     Apply Filter
                 </button>
             </form>
-
-            <form th:action="@{/inbox/search}">
-                <label for="keyword"></label>
-                <input type="text" id="keyword" name="keyword" placeholder="Search..." class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <button type="submit" class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</button>
-            </form>
+            <div class="flex">
+                <form th:action="@{/inbox/search}">
+                    <label for="keyword"></label>
+                    <input type="text" id="keyword" name="keyword" placeholder="Search..." class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <button type="submit" class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</button>
+                </form>
+                <form action="/inbox" method="get">
+                    <button type="submit" class="bg-gray-300 hover:bg-gray-400 ml-2 p-1 rounded">
+                        <img src="/images/refresh.png" alt="Refresh" class="w-8 h-8"/>
+                    </button>
+                </form>
+            </div>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full leading-normal">
                 <thead>
                 <tr>
-                    <th class="w-14 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="w-14 px-5 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                         Date
                     </th>
-                    <th class="w-48 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="w-48 px-5 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                         Sender
                     </th>
-                    <th class="pl-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="pl-3 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                         Subject
                     </th>
-                    <th class="w-24 pl-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="w-24 px-3 py-3 border-b-2 border-gray-300 bg-gray-100 text-center text-sm font-semibold text-gray-600 uppercase tracking-wider">
                         Actions
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="email : ${emails}">
-                    <td class="w-14 py-3 border-b border-gray-200 bg-white text-base">
-                        <p class="text-gray-900 text-sm whitespace-no-wrap" th:text="${email.getDate()}"></p>
-                    </td>
-                    <td class="w-48 px-3 py-3 border-b border-gray-200 bg-white text-base">
-                        <div class="flex items-center">
-                            <div class="ml-3">
-                                <p class="text-gray-900 whitespace-no-wrap" th:text="${email.getName()}"></p>
-                                <p class="text-gray-600 whitespace-no-wrap" th:text="${email.getEmail()}"></p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-3 py-3 border-b border-gray-200 bg-white text-base">
-                        <p class="text-gray-900 whitespace-no-wrap" th:text="${email.getSubject()}"></p>
-                    </td>
-                    <td class="w-32 pr-3 py-3 border-b border-gray-200 bg-white text-base space-x-2">
-                        <div class="flex space-x-2">
-                            <form th:action="@{/star}" th:method="post">
-                                <input type="hidden" name="emailId" th:value="${email.getId()}" />
-                                <button type="submit">
-                                    <img th:src="${email.isStarred} ? '/images/filled_star.png' : '/images/empty_star.png'" alt="Star" class="w-9 h-9"/>
-                                </button>
-                            </form>
-                            <form class="mt-1" th:action="@{/like}" th:method="post">
-                                <input type="hidden" name="emailId" th:value="${email.getId()}" />
-                                <button type="submit">
-                                    <img th:src="${email.isLiked} ? '/images/filled_heart.png' : '/images/empty_heart.png'" alt="Like" class="w-7 h-7"/>
-                                </button>
-                            </form>
-                            <form class="mt-1 ml-1" th:action="@{/inbox/email-details}" th:method="post">
-                                <input type="hidden" name="emailId" th:value="${email.getId()}" />
-                                <button type="submit">
-                                    <img th:src="'/images/info.png'" alt="Info" class="w-7 h-7"/>
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
+                    <tr  th:each="email : ${emails}" th:insert="~{blocks/receivedEmailBlock :: emailRow(email=${email})}"></tr>
+                    <tr th:unless="${received}" th:each="email : ${emails}" th:insert="~{blocks/sentEmailBlock :: emailRow(email=${email})}"></tr>
                 </tbody>
             </table>
         </div>

@@ -1,0 +1,38 @@
+<tr th:fragment="emailRow">
+    <td class="w-14 py-3 pl-2 border-b border-gray-400 text-base" th:classappend="${email.isViewed} ? 'bg-gray-200' : 'bg-white'">
+        <p class="text-gray-900 text-sm whitespace-no-wrap" th:text="${email.getDate()}"></p>
+    </td>
+    <td class="w-48 px-3 py-3 border-b border-gray-400 text-base" th:classappend="${email.isViewed} ? 'bg-gray-200' : 'bg-white'">
+        <div class="flex items-center">
+            <div class="ml-3">
+                <p class="text-gray-900 whitespace-no-wrap" th:text="${email.getName()}"></p>
+                <p class="text-gray-600 whitespace-no-wrap" th:text="${email.getEmail()}"></p>
+            </div>
+        </div>
+    </td>
+    <td class="px-3 py-3 border-b border-gray-400 text-base" th:classappend="${email.isViewed} ? 'bg-gray-200' : 'bg-white'">
+        <p class="text-gray-900 whitespace-no-wrap" th:text="${email.getSubject()}"></p>
+    </td>
+    <td class="w-32 pr-3 py-3 border-b border-gray-400 text-base space-x-2" th:classappend="${email.isViewed} ? 'bg-gray-200' : 'bg-white'">
+        <div class="flex space-x-2">
+            <form th:action="@{/star}" th:method="post">
+                <input type="hidden" name="emailId" th:value="${email.getId()}" />
+                <button type="submit">
+                    <img th:src="${email.isStarred} ? '/images/filled_star.png' : '/images/empty_star.png'" alt="Star" class="w-9 h-9"/>
+                </button>
+            </form>
+            <form class="mt-1" th:action="@{/like}" th:method="post">
+                <input type="hidden" name="emailId" th:value="${email.getId()}" />
+                <button type="submit">
+                    <img th:src="${email.isLiked} ? '/images/filled_heart.png' : '/images/empty_heart.png'" alt="Like" class="w-7 h-7"/>
+                </button>
+            </form>
+            <form class="mt-1 ml-1" th:action="@{/inbox/email-details}" th:method="post">
+                <input type="hidden" name="emailId" th:value="${email.getId()}" />
+                <button type="submit">
+                    <img th:src="'/images/info.png'" alt="Info" class="w-7 h-7"/>
+                </button>
+            </form>
+        </div>
+    </td>
+</tr>
