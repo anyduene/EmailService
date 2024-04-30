@@ -1,6 +1,6 @@
 package main.entities.models;
 
-import filters.SpamFilter;
+import main.entities.filters.ISpamFilter;
 import main.emails.ReceivedEmail;
 import main.emails.SentEmail;
 import main.entities.repositories.IReceivedEmailsRepository;
@@ -13,10 +13,12 @@ import java.util.List;
 public class EmailHandler implements IEmailHandler {
     private final IReceivedEmailsRepository receivedEmailsRepository;
     private final ISentEmailsRepository sentEmailsRepository;
+    private final ISpamFilter spamFilter;
 
-    public EmailHandler(IReceivedEmailsRepository receivedEmailsRepository, ISentEmailsRepository sentEmailsRepository) {
+    public EmailHandler(IReceivedEmailsRepository receivedEmailsRepository, ISentEmailsRepository sentEmailsRepository, ISpamFilter spamFilter) {
         this.receivedEmailsRepository = receivedEmailsRepository;
         this.sentEmailsRepository = sentEmailsRepository;
+        this.spamFilter = spamFilter;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class EmailHandler implements IEmailHandler {
     @Override
     public void receiveEmail(String email, String subject, String text, String name) {
         ReceivedEmail receivedEmail = new ReceivedEmail(email, subject, text, name);
-        if(SpamFilter.checkForSpam(email, text, subject, name)) {
+        if(spamFilter.checkForSpam(email, text, subject, name)) {
             receivedEmail.isSpam = true;
             receivedEmailsRepository.addSpamEmail(receivedEmail);
             ReceivedEmail.spam_count++;

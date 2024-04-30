@@ -1,4 +1,4 @@
-package filters;
+package main.entities.filters;
 
 public abstract class ConfidentialDataManager {
     public static String checkForNumber(String text) {

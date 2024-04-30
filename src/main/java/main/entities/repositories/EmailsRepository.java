@@ -109,9 +109,9 @@ public class EmailsRepository implements IReceivedEmailsRepository, ISentEmailsR
             if(Math.random() <= 0.1) {
                 email.isSpam = true;
                 spam_emails.add(email);
-                continue;
+            } else {
+                received_emails.add(email);
             }
-            received_emails.add(email);
         }
     }
 

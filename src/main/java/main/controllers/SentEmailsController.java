@@ -19,7 +19,9 @@ public class SentEmailsController {
     @GetMapping("/sent")
     public String sent(Model model) {
         model.addAttribute("emails", sentEmailsRepository.getSentEmails());
+        model.addAttribute("sent", true);
         model.addAttribute("received", false);
+        model.addAttribute("spam", false);
         return "inbox";
     }
 }

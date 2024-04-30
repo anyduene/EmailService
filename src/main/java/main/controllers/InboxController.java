@@ -1,6 +1,6 @@
 package main.controllers;
 
-import filters.ConfidentialDataManager;
+import main.entities.filters.ConfidentialDataManager;
 import main.emails.ReceivedEmail;
 import main.entities.repositories.IReceivedEmailsRepository;
 import main.entities.models.EmailHandler;
@@ -29,8 +29,9 @@ public class InboxController {
     public String inbox(Model model) {
         model.addAttribute("emails", receivedEmailsRepository.getReceivedEmails());
         model.addAttribute("received", true);
+        model.addAttribute("sent", false);
+        model.addAttribute("spam", false);
         this.keyword = null;
-        System.out.println("receivedEmailsRepository.getReceivedEmails()");
         return "inbox";
     }
 
@@ -91,6 +92,8 @@ public class InboxController {
         }
         model.addAttribute("emails", filteredEmails);
         model.addAttribute("received", true);
+        model.addAttribute("sent", false);
+        model.addAttribute("spam", false);
         return "inbox";
     }
 
@@ -105,6 +108,8 @@ public class InboxController {
         }
         model.addAttribute("emails", searchResult);
         model.addAttribute("received", true);
+        model.addAttribute("sent", false);
+        model.addAttribute("spam", false);
         return "inbox";
     }
 }
