@@ -22,7 +22,7 @@ public class EmailHandler implements IEmailHandler {
     }
 
     @Override
-    public ReceivedEmail findEmailById(int emailId) {
+    public ReceivedEmail findReceivedEmailById(int emailId) {
         List<ReceivedEmail> receivedEmails = receivedEmailsRepository.getReceivedEmails();
         List<ReceivedEmail> spamEmails = receivedEmailsRepository.getSpamEmails();
         for(ReceivedEmail email : receivedEmails) {
@@ -31,6 +31,17 @@ public class EmailHandler implements IEmailHandler {
             }
         }
         for(ReceivedEmail email : spamEmails) {
+            if(email.getId() == emailId) {
+                return email;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public SentEmail findSentEmailById(int emailId) {
+        List<SentEmail> sentEmails = sentEmailsRepository.getSentEmails();
+        for(SentEmail email : sentEmails) {
             if(email.getId() == emailId) {
                 return email;
             }
@@ -100,5 +111,14 @@ public class EmailHandler implements IEmailHandler {
         receivedEmailsRepository.addSpamEmail(email);
         ReceivedEmail.spam_count++;
         ReceivedEmail.received_count--;
+    }
+
+    @Override
+    public void recoverFromSpam(ReceivedEmail email) {
+        receivedEmailsRepository.remove("spam", email);
+        email.isSpam = false;
+        receivedEmailsRepository.addReceivedEmail(email);
+        ReceivedEmail.received_count++;
+        ReceivedEmail.spam_count--;
     }
 }

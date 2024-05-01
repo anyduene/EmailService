@@ -23,6 +23,7 @@ public class SpamEmailsController {
         model.addAttribute("spam", true);
         model.addAttribute("received", false);
         model.addAttribute("sent", false);
+        model.addAttribute("back", "/spam");
         return "inbox";
     }
 }

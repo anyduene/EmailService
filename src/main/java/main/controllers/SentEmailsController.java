@@ -22,6 +22,7 @@ public class SentEmailsController {
         model.addAttribute("sent", true);
         model.addAttribute("received", false);
         model.addAttribute("spam", false);
+        model.addAttribute("back", "/sent");
         return "inbox";
     }
 }

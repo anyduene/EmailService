@@ -13,8 +13,10 @@
         <a href="/" class="absolute ml-3 inline-block">
             <img src="/images/back_arrow.png" alt="Back" class="w-10 h-7"/>
         </a>
-        <h2 class="font-semibold text-3xl mb-6 text-gray-800 text-center">Inbox</h2>
-        <div class="flex justify-between mb-4">
+        <h2 th:if="${received}" class="font-semibold text-3xl mb-6 text-gray-800 text-center">Inbox</h2>
+        <h2 th:if="${sent}" class="font-semibold text-3xl mb-6 text-gray-800 text-center">Sent</h2>
+        <h2 th:if="${spam}" class="font-semibold text-3xl mb-6 text-gray-800 text-center">Spam</h2>
+        <div th:if="${not #lists.isEmpty(emails)}" class="flex justify-between mb-4">
             <form th:if="${received}" th:action="@{/filter}" method="post" class="flex items-center">
                 <label class="inline-flex items-center">
                     <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-500" name="liked" value="true"/>
@@ -44,7 +46,7 @@
         <div class="overflow-x-auto">
             <table class="min-w-full leading-normal">
                 <thead>
-                <tr>
+                <tr th:if="${not #lists.isEmpty(emails)}">
                     <th class="w-14 px-5 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                         Date
                     </th>
@@ -59,11 +61,17 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody th:if="${not #lists.isEmpty(emails)}">
                     <tr th:if="${received}" th:each="email : ${emails}" th:insert="~{blocks/receivedEmailBlock :: emailRow(email=${email})}"></tr>
                     <tr th:if="${sent}" th:each="email : ${emails}" th:insert="~{blocks/sentEmailBlock :: emailRow(email=${email})}"></tr>
                     <tr th:if="${spam}" th:each="email : ${emails}" th:insert="~{blocks/spamEmailBlock :: emailRow(email=${email})}"></tr>
                 </tbody>
+                <tbody th:unless="${not #lists.isEmpty(emails)}">
+                    <tr>
+                        <td colspan="4" class="text-center text-2xl py-4 text-gray-500">No emails found</td>
+                    </tr>
+                </tbody>
+
             </table>
         </div>
     </div>
@@ -81,6 +89,13 @@
             localStorage.removeItem('scrollPosition');
         }
     });
+</script>
+
+<script>
+    function getPath() {
+        const previousPage = localStorage.setItem('previousPage', window.location.href);
+        return previousPage;
+    }
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>

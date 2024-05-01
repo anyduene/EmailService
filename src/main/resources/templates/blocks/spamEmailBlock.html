@@ -15,7 +15,7 @@
     </td>
     <td class="w-32 pr-3 py-3 border-b border-gray-400 bg-gray-200 text-base space-x-2">
         <div class="class=flex space-x-2 flex justify-center">
-            <form class="mt-1 ml-1" th:action="@{/inbox/email-details}" th:method="post">
+            <form class="mt-1 ml-1" th:action="@{/spam/email-details}" th:method="post">
                 <input type="hidden" name="emailId" th:value="${email.getId()}" />
                 <button type="submit">
                     <img th:src="'/images/info.png'" alt="Info" class="w-7 h-7"/>
