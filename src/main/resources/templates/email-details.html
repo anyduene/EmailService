@@ -14,11 +14,13 @@
         </a>
         <h2 class="font-semibold text-3xl mb-6 text-gray-800 text-center">Email Details</h2>
         <div class="border-b border-gray-200 pb-4 mb-6">
-            <h3 class="text-lg font-semibold text-gray-800">Received Time:</h3>
+            <h3 th:if="${received}" class="text-lg font-semibold text-gray-800">Received Time:</h3>
+            <h3 th:if="${sent}" class="text-lg font-semibold text-gray-800">Sent Time:</h3>
             <p class="text-gray-700" th:text="${email.getDate()} + '  at  ' + ${email.getTime()}"></p>
         </div>
         <div class="border-b border-gray-200 pb-4 mb-6">
-            <h3 class="text-lg font-semibold text-gray-800">Sender:</h3>
+            <h3 th:if="${received}" class="text-lg font-semibold text-gray-800">Sender:</h3>
+            <h3 th:if="${sent}" class="text-lg font-semibold text-gray-800">Recipient:</h3>
             <p class="text-gray-700" id="senderName" th:unless="${sent}" th:text="${email.getName()}"></p>
             <p class="text-gray-700" id="senderEmail" th:text="${email.getEmail()}"></p>
         </div>
@@ -31,7 +33,11 @@
             <p class="text-gray-700" id="emailContent" th:text="${text}"></p>
         </div>
         <div class="flex justify-end">
-            <form class="mx-1" th:action="@{/inbox/email-details/view-full}" th:method="post">
+            <form class="mx-1" th:if="${received}" th:action="@{/inbox/email-details/view-full}" th:method="post">
+                <input type="hidden" name="emailId" th:value="${email.getId()}" />
+                <button th:disabled="${fullView}" th:classappend="${fullView} ? 'btn bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed' : 'btn bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'" type="submit">View full</button>
+            </form>
+            <form class="mx-1" th:if="${spam}" th:action="@{/spam/email-details/view-full}" th:method="post">
                 <input type="hidden" name="emailId" th:value="${email.getId()}" />
                 <button th:disabled="${fullView}" th:classappend="${fullView} ? 'btn bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed' : 'btn bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'" type="submit">View full</button>
             </form>
