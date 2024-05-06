@@ -3,11 +3,8 @@ package main.entities.filters;
 import main.emails.ReceivedEmail;
 import main.entities.repositories.IReceivedEmailsRepository;
 import main.entities.repositories.ISpamFilterRepository;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
-@Component
 public class SpamFilter implements ISpamFilter {
     private static ISpamFilterRepository spamFilterRepository;
     private static IReceivedEmailsRepository receivedEmailsRepository;

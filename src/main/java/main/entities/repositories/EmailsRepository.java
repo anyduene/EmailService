@@ -2,12 +2,10 @@ package main.entities.repositories;
 
 import main.emails.ReceivedEmail;
 import main.emails.SentEmail;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class EmailsRepository implements IReceivedEmailsRepository, ISentEmailsRepository {
     private static final List<SentEmail> sent_emails = new ArrayList<>();
     private static final List<ReceivedEmail> received_emails = new ArrayList<>();

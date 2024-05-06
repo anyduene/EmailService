@@ -2,8 +2,8 @@ package main.controllers;
 
 import main.entities.filters.ConfidentialDataManager;
 import main.emails.ReceivedEmail;
+import main.entities.models.IEmailHandler;
 import main.entities.repositories.IReceivedEmailsRepository;
-import main.entities.models.EmailHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 public class InboxController {
     private ReceivedEmail receivedEmail;
     private String keyword;
-    private final EmailHandler emailHandler;
+    private final IEmailHandler emailHandler;
     private final IReceivedEmailsRepository receivedEmailsRepository;
 
-    public InboxController(IReceivedEmailsRepository receivedEmailsRepository, EmailHandler emailHandler) {
+    public InboxController(IReceivedEmailsRepository receivedEmailsRepository, IEmailHandler emailHandler) {
         this.receivedEmailsRepository = receivedEmailsRepository;
         this.emailHandler = emailHandler;
     }
@@ -52,7 +52,7 @@ public class InboxController {
     }
 
     @PostMapping("/inbox/email-details")
-    public String emailDetailsInbox(@RequestParam int emailId, Model model) {
+    public String emailDetailsInbox(Model model, @RequestParam int emailId) {
         receivedEmail = emailHandler.findReceivedEmailById(emailId);
         receivedEmail.isViewed = true;
         model.addAttribute("email", receivedEmail);

@@ -5,11 +5,9 @@ import main.emails.ReceivedEmail;
 import main.emails.SentEmail;
 import main.entities.repositories.IReceivedEmailsRepository;
 import main.entities.repositories.ISentEmailsRepository;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class EmailHandler implements IEmailHandler {
     private final IReceivedEmailsRepository receivedEmailsRepository;
     private final ISentEmailsRepository sentEmailsRepository;

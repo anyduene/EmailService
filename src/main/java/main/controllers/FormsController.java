@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class EmailController {
+public class FormsController {
     public final IEmailHandler emailHandler;
 
-    public EmailController(IEmailHandler emailHandler) {
+    public FormsController(IEmailHandler emailHandler) {
         this.emailHandler = emailHandler;
     }
 

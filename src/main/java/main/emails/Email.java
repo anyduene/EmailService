@@ -3,6 +3,7 @@ package main.emails;
 import main.entities.models.TimeHandler;
 
 public abstract class Email {
+    private static int idCounter = 0;
     private final int id;
     private final String subject;
     private final String text;
@@ -16,7 +17,7 @@ public abstract class Email {
         this.date = TimeHandler.getDate();
         this.time = TimeHandler.getTime();
         this.isViewed = isViewed;
-        this.id = ReceivedEmail.received_count + SentEmail.sent_count + ReceivedEmail.spam_count;
+        this.id = idCounter++;
     }
 
     public int getId() {
